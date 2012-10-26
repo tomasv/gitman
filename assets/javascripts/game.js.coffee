@@ -55,7 +55,7 @@ class GitMan.Game
     @draw()
 
   update: ->
-    entity.update?() for entity in @entities
+    entity.update?(@entities) for entity in @entities
 
   draw: ->
     @canvas.clear()
