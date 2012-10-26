@@ -1,22 +1,11 @@
-Bundler.require
+require './app'
 
-environment = Sprockets::Environment.new
-
-environment.append_path 'assets/javascripts'
-environment.append_path 'assets/images'
-environment.append_path 'assets/sounds'
-environment.append_path 'assets/stylesheets'
-
-environment.append_path 'vendor/assets/javascripts'
+git_man = GitMan.new
 
 map '/assets' do
-  run environment
-end
-
-get '/' do
-  erb :index
+  run git_man.sprockets_environment
 end
 
 map '/' do
-  run Sinatra::Application
+  run git_man.app
 end

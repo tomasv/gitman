@@ -47,12 +47,9 @@ class GitMan.Game
 
   loop: ->
     return unless @running
-    @tick()
-    setTimeout(@loop.bind(this), @frameInterval())
-
-  tick: ->
     @update()
     @draw()
+    setTimeout(@loop.bind(this), @frameInterval())
 
   update: ->
     entity.update?(@entities) for entity in @entities
