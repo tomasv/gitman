@@ -1,48 +1,39 @@
 class GitMan.Player
-  image: 'player_anim'
   height: 32
   width: 32
-
-  frames: 4
-  animations:
-    right: 0
-    left: 1
+  x: 0
+  y: 0
+  dx: 0
+  dy: 0
 
   speed: 10
 
-  constructor: (@game) ->
-    @currentAnimation = 'right'
-    @frameCounter = 0
-    @x = 0
-    @y = 0
-    @dx = 0
-    @dy = 0
+  constructor: (config) ->
+    for name, value of config
+      @[name] = value
 
-  draw: ->
+    @animation = new GitMan.Animation this,
+      image: 'player_anim'
+      width: 32
+      height: 32
+      frames: 4
+      currentAnimation: 'right'
+      animations:
+        right: 0
+        left: 1
 
+  draw: (canvas) ->
     if @dx > 0
-      @currentAnimation = 'right'
+      @animation.currentAnimation = 'right'
     else if @dx < 0
-      @currentAnimation = 'left'
+      @animation.currentAnimation = 'left'
 
-    @adx = Math.abs(@dx)
-    @ady = Math.abs(@dy)
+    @animation.drawAnimation(canvas)
 
-    if @adx > 0 or @ady > 0
-      @frameCounter++
-      @frameCounter = 0 if @frameCounter > @frames
-
-    @yFrame = @animations[@currentAnimation]
-    @xFrame = @frameCounter % @frames
-
-    @xOffset = @xFrame * @width
-    @yOffset = @yFrame * @height
-
-    @game.canvas.drawFrame(
-      @image,
-      @xOffset, @yOffset, @width, @height,
-      @x, @y, @width, @height
-    )
+  isMoving: ->
+    adx = Math.abs(@dx)
+    ady = Math.abs(@dy)
+    adx > 0 or ady > 0
 
   update: ->
     @x += @dx
@@ -50,6 +41,8 @@ class GitMan.Player
 
     @dx = Math.round(@dx * 0.4)
     @dy = Math.round(@dy * 0.4)
+
+    @animation.update() if @isMoving()
 
   up:    -> @dy = -@speed
   down:  -> @dy = +@speed

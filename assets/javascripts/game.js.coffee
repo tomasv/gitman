@@ -4,6 +4,7 @@ class GitMan.Game
   manifest:
     player: 'assets/player.png'
     player_anim: 'assets/player_anim.png'
+    block: 'assets/block.png'
 
   constructor: (selector) ->
     @canvasElement = $(selector).get(0)
@@ -30,11 +31,14 @@ class GitMan.Game
 
   entitySetup: ->
     @entities = []
-    @player = new GitMan.Player(this)
-    @player2 = new GitMan.Player(this)
-    @player2.x = 32 * 5
-    @player2.y = 32 * 2
 
+    @entities.push new GitMan.Block(x: 50, y: 50)
+    @entities.push new GitMan.Block(x: 150, y: 20)
+    @entities.push new GitMan.Block(x: 200, y: 150)
+    @entities.push new GitMan.Block(x: 10, y: 200)
+
+    @player = new GitMan.Player()
+    @player2 = new GitMan.Player(x: 32 * 5, y: 32 * 2)
     @chaser = new GitMan.Chaser(@player2, @player)
 
     @entities.push(@player2)
@@ -55,7 +59,7 @@ class GitMan.Game
 
   draw: ->
     @canvas.clear()
-    entity.draw?() for entity in @entities
+    entity.draw?(@canvas) for entity in @entities
 
   frameInterval: ->
     1000 / @fps
