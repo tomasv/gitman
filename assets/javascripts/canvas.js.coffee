@@ -1,5 +1,5 @@
 class GitMan.Canvas
-  constructor: (@canvas) ->
+  constructor: (@canvas, @images) ->
     @context = @canvas.getContext('2d')
 
   drawImage: (name, x, y) ->

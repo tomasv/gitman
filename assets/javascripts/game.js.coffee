@@ -11,13 +11,9 @@ class GitMan.Game
 
   constructor: (selector) ->
     @canvasElement = $(selector).get(0)
-    @canvas = new GitMan.Canvas(@canvasElement)
     @assetLoader = new GitMan.AssetLoader(@assets)
     @eventHandler = new GitMan.EventHandler()
-    @assetLoader.load @assetsLoaded.bind(this)
-
-  assetsLoaded: ->
-    @start()
+    @assetLoader.load @start.bind(this)
 
   captureEvents: ->
     @eventHandler.on 'h', => @player.left()
@@ -27,8 +23,8 @@ class GitMan.Game
     @eventHandler.on 'b', => @assetLoader.sounds.beep.play()
 
   start: ->
+    @canvas = new GitMan.Canvas(@canvasElement, @assetLoader.images)
     @captureEvents()
-    @canvas.images = @assetLoader.images
     @entitySetup()
     @running = true
     @loop()
