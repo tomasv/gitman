@@ -1,11 +1,11 @@
-require './app'
+require './gitman'
 
-git_man = GitMan.new
+gitman = Gitman.new
 
 map '/assets' do
-  run git_man.sprockets_environment
+  run gitman.sprockets_environment
 end
 
 map '/' do
-  run git_man.app
+  run gitman.app
 end

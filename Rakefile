@@ -1,9 +1,9 @@
 Bundler.require
 
 require 'rake/sprocketstask'
-require './app'
+require './gitman'
 
-sprockets = GitMan.new.sprockets_environment
+sprockets = Gitman.new.sprockets_environment
 
 Rake::SprocketsTask.new do |t|
   t.environment = sprockets

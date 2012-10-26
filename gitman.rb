@@ -1,6 +1,6 @@
 Bundler.require
 
-class GitMan
+class Gitman
   class App < Sinatra::Base
     get '/' do
       erb :index
