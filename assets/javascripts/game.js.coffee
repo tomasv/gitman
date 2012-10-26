@@ -1,19 +1,22 @@
 class GitMan.Game
   fps: 30
 
-  manifest:
-    player: 'assets/player.png'
-    player_anim: 'assets/player_anim.png'
-    block: 'assets/block.png'
+  assets:
+    images:
+      player: 'assets/player.png'
+      player_anim: 'assets/player_anim.png'
+      block: 'assets/block.png'
+    sounds:
+      beep: 'assets/beep.wav'
 
   constructor: (selector) ->
     @canvasElement = $(selector).get(0)
     @canvas = new GitMan.Canvas(@canvasElement)
-    @imageLoader = new GitMan.ImageLoader(@manifest)
+    @assetLoader = new GitMan.AssetLoader(@assets)
     @eventHandler = new GitMan.EventHandler()
-    @imageLoader.load @imagesLoaded.bind(this)
+    @assetLoader.load @assetsLoaded.bind(this)
 
-  imagesLoaded: ->
+  assetsLoaded: ->
     @start()
 
   captureEvents: ->
@@ -21,10 +24,11 @@ class GitMan.Game
     @eventHandler.on 'j', => @player.down()
     @eventHandler.on 'k', => @player.up()
     @eventHandler.on 'l', => @player.right()
+    @eventHandler.on 'b', => @assetLoader.sounds.beep.play()
 
   start: ->
     @captureEvents()
-    @canvas.images = @imageLoader.images
+    @canvas.images = @assetLoader.images
     @entitySetup()
     @running = true
     @loop()

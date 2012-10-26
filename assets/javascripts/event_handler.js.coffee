@@ -1,5 +1,6 @@
 class GitMan.EventHandler
   codes:
+    66: 'b'
     72: 'h'
     74: 'j'
     75: 'k'
@@ -16,7 +17,7 @@ class GitMan.EventHandler
 
   keyUp: (event) ->
     key = @codes[event.keyCode]
-    @trigger(key, 'up')
+    #@trigger(key, 'up')
 
   on: (key, callback) ->
     return this unless key?
