@@ -27,7 +27,7 @@ class GitMan.Player
       @animation.currentAnimation = 'right'
     else if @dx < 0
       @animation.currentAnimation = 'left'
-    @animation.drawAnimation(canvas)
+    @animation.draw(canvas)
 
   isMoving: ->
     adx = Math.abs(@dx)

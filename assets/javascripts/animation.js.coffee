@@ -8,7 +8,7 @@ class GitMan.Animation
     @frameCounter++
     @frameCounter = 0 if @frameCounter > @frames
 
-  drawAnimation: (canvas) ->
+  draw: (canvas) ->
     yFrame = @animations[@currentAnimation]
     xFrame = @frameCounter % @frames
 

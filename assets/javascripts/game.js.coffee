@@ -7,6 +7,8 @@ class GitMan.Game
       player_anim: 'assets/player_anim.png'
       block: 'assets/block.png'
       title_screen: 'assets/title_screen.png'
+      start: 'assets/start.png'
+      controls: 'assets/controls.png'
     sounds:
       beep: 'assets/beep.wav'
 

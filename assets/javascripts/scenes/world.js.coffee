@@ -13,9 +13,12 @@ class GitMan.World extends GitMan.Scene
     @add @player
     @add @chaser
 
-    @on 'h', => @player.left()
-    @on 'j', => @player.down()
-    @on 'k', => @player.up()
-    @on 'l', => @player.right()
-    @on 'b', => @assetLoader.sounds.beep.play()
+    @on 'keydown', (key) =>
+      actions =
+        h: => @player.left()
+        j: => @player.down()
+        k: => @player.up()
+        l: => @player.right()
+        b: => @assetLoader.sounds.beep.play()
+      actions[key]()
 

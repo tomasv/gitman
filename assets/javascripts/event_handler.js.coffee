@@ -1,5 +1,6 @@
 class GitMan.EventHandler
   codes:
+    13: 'enter'
     66: 'b'
     72: 'h'
     74: 'j'
@@ -14,6 +15,8 @@ class GitMan.EventHandler
 
   keyDown: (event) ->
     key = @codes[event.keyCode]
+    unless key?
+      console.log("unrecognized keycode #{event.keyCode}")
     @trigger('keydown', key)
     @trigger(key, 'down')
 
