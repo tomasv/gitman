@@ -9,9 +9,9 @@ class GitMan.MainMenu extends GitMan.Scene
     @on 'keydown', (key) =>
       actions =
         j: @down
-        l: @up
+        k: @up
         enter: @select
-      actions[key]()
+      actions[key]?()
 
   down: =>
     @toggle()

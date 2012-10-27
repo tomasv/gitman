@@ -20,5 +20,5 @@ class GitMan.World extends GitMan.Scene
         k: => @player.up()
         l: => @player.right()
         b: => @assetLoader.sounds.beep.play()
-      actions[key]()
+      actions[key]?()
 
