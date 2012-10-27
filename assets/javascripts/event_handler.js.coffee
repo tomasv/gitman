@@ -7,17 +7,26 @@ class GitMan.EventHandler
     76: 'l'
 
   constructor: ->
-    @callbacks = {}
+    @reset()
     $(window).on 'keydown', @keyDown.bind(this)
     $(window).on 'keyup', @keyUp.bind(this)
+    $('canvas').on 'click', @click.bind(this)
 
   keyDown: (event) ->
     key = @codes[event.keyCode]
+    @trigger('keydown', key)
     @trigger(key, 'down')
 
   keyUp: (event) ->
     key = @codes[event.keyCode]
     #@trigger(key, 'up')
+  
+  click: (event) ->
+    canvas = $(event.target)
+    coords =
+      x: event.pageX - canvas.offset().left,
+      y: event.pageY - canvas.offset().top
+    @trigger('click', coords)
 
   on: (key, callback) ->
     return this unless key?
@@ -29,4 +38,7 @@ class GitMan.EventHandler
     callbacks = @callbacks[key] ? []
     for callback in callbacks
       callback.call(this, message)
+
+  reset: ->
+    @callbacks = {}
 

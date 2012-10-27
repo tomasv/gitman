@@ -6,6 +6,7 @@ class GitMan.Game
       player: 'assets/player.png'
       player_anim: 'assets/player_anim.png'
       block: 'assets/block.png'
+      title_screen: 'assets/title_screen.png'
     sounds:
       beep: 'assets/beep.wav'
 
@@ -15,35 +16,16 @@ class GitMan.Game
     @eventHandler = new GitMan.EventHandler()
     @assetLoader.load @start.bind(this)
 
-  captureEvents: ->
-    @eventHandler.on 'h', => @player.left()
-    @eventHandler.on 'j', => @player.down()
-    @eventHandler.on 'k', => @player.up()
-    @eventHandler.on 'l', => @player.right()
-    @eventHandler.on 'b', => @assetLoader.sounds.beep.play()
-
   start: ->
     @canvas = new GitMan.Canvas(@canvasElement, @assetLoader.images)
-    @captureEvents()
-    @entitySetup()
+    @setScene(new GitMan.TitleScreen(this))
     @running = true
     @loop()
 
-  entitySetup: ->
-    @entities = []
-
-    @entities.push new GitMan.Block(x: 50, y: 50)
-    @entities.push new GitMan.Block(x: 150, y: 20)
-    @entities.push new GitMan.Block(x: 200, y: 150)
-    @entities.push new GitMan.Block(x: 10, y: 200)
-
-    @player = new GitMan.Player()
-    @player2 = new GitMan.Player(x: 32 * 5, y: 32 * 2)
-    @chaser = new GitMan.Chaser(@player2, @player)
-
-    @entities.push(@player2)
-    @entities.push(@player)
-    @entities.push(@chaser)
+  setScene: (scene) ->
+    @eventHandler.reset()
+    scene.setup()
+    @scene = scene
 
   loop: ->
     return unless @running
@@ -52,11 +34,11 @@ class GitMan.Game
     setTimeout(@loop.bind(this), @frameInterval())
 
   update: ->
-    entity.update?(@entities) for entity in @entities
+    entity.update?(@scene.entities) for entity in @scene.entities
 
   draw: ->
     @canvas.clear()
-    entity.draw?(@canvas) for entity in @entities
+    entity.draw?(@canvas) for entity in @scene.entities
 
   frameInterval: ->
     1000 / @fps
