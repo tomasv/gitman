@@ -1,6 +1,9 @@
 class GitMan.Game
   fps: 30
 
+  width: 320
+  height: 240
+
   assets:
     images:
       player: 'assets/player.png'
@@ -30,10 +33,14 @@ class GitMan.Game
     @scene = scene
 
   loop: ->
+    frameStart = new Date()
     return unless @running
     @update()
     @draw()
-    setTimeout(@loop.bind(this), @frameInterval())
+    frameEnd = new Date()
+    frameDuration = frameEnd - frameStart
+    waitTime = @frameInterval() - frameDuration
+    setTimeout(@loop.bind(this), waitTime)
 
   update: ->
     entity.update?(@scene.entities) for entity in @scene.entities

@@ -1,4 +1,6 @@
 class GitMan.Player
+  @mixin GitMan.BoundingBoxed
+
   height: 32
   width: 32
   x: 0
@@ -29,34 +31,26 @@ class GitMan.Player
       @animation.currentAnimation = 'left'
     @animation.draw(canvas)
 
+  update: (entities) ->
+    @move(entities)
+    @slowDown()
+    @animation.update() if @isMoving()
+
+  move: (entities) ->
+    box = @getBoundingBox().moved(@dx, @dy)
+    colliding = box.collidesWith(entities)
+    unless colliding
+      @x = box.x
+      @y = box.y
+
+  slowDown: ->
+    @dx = Math.round(@dx * 0.4)
+    @dy = Math.round(@dy * 0.4)
+
   isMoving: ->
     adx = Math.abs(@dx)
     ady = Math.abs(@dy)
     adx > 0 or ady > 0
-
-  update: (world) ->
-    newX = @x + @dx
-    newY = @y + @dy
-
-    colliding = false
-    for entity in world when entity != this
-      colliding = true if @collideWithAt(entity, newX, newY)
-
-    unless colliding
-      @x = newX
-      @y = newY
-
-    @dx = Math.round(@dx * 0.4)
-    @dy = Math.round(@dy * 0.4)
-
-    @animation.update() if @isMoving()
-
-  collideWithAt: (entity, newX, newY) ->
-    xCollision = entity.x <= newX <= entity.x + entity.width
-    x2Collision = entity.x <= newX + @width <= entity.x + entity.width
-    yCollision = entity.y <= newY <= entity.y + entity.height
-    y2Collision = entity.y <= newY + @height <= entity.y + entity.height
-    (xCollision or x2Collision) and (yCollision or y2Collision)
 
   up:    -> @dy = -@speed
   down:  -> @dy = +@speed
